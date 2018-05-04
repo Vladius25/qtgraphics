@@ -12,12 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    scene = new QGraphicsScene(this);
-
-    graph = new QPixmap(ui->graphicsView->width(), ui->graphicsView->height());
+    graph = new QPixmap(500, 500);
 
     ui->graphicsView->setPixmap(*graph);
-
+   // ui->graphicsView->setScaledContents(1);
+    ui->graphicsView->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    ui->graphicsView->setAlignment(Qt::AlignCenter);
+ui->graphicsView->setScaledContents(true);
     drawOS();
     QPushButton *calcBut = ui->calcButton;
 
