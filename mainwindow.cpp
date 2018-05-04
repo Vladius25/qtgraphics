@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
    // ui->graphicsView->setScaledContents(1);
     ui->graphicsView->setStyleSheet("QLabel { background-color : white; color : blue; }");
     ui->graphicsView->setAlignment(Qt::AlignCenter);
-ui->graphicsView->setScaledContents(true);
+
     drawOS();
     QPushButton *calcBut = ui->calcButton;
 
