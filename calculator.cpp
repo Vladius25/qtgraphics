@@ -258,7 +258,7 @@ double Calculator::eval(QString qstr, double i)
     qstr.replace("ln", "l");
     qstr.replace("sqrt", "q");
 
-    qstr.replace("x", "("+QString::number(i)+")");
+    qstr.replace("x", "(0.1*("+QString::number(i)+"))");
    string expr = qstr.toUtf8().constData();
 
     //printf("%s\n", expr.c_str());
