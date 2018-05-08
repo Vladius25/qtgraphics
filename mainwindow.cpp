@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scene = new QGraphicsScene(this);
 
-    graph = new QPixmap(ui->graphicsView->width(), ui->graphicsView->height());
+    graph = new QPixmap(600, 300);
 
     ui->graphicsView->setPixmap(*graph);
 
