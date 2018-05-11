@@ -12,18 +12,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-<<<<<<< HEAD
-    scene = new QGraphicsScene(this);
 
-    graph = new QPixmap(600, 300);
-=======
-    graph = new QPixmap(500, 500);
->>>>>>> 7342c829fa0e96bebb321ca31f23e1e630f1d54c
+    int w = ui->centralWidget->width();
+    int h = ui->centralWidget->height();
 
-    ui->graphicsView->setPixmap(*graph);
+
+
     //ui->graphicsView->setScaledContents(1);
     ui->graphicsView->setStyleSheet("QLabel { background-color : white; color : blue; }");
+
     ui->graphicsView->setAlignment(Qt::AlignCenter);
+
 
     drawOS();
     QPushButton *calcBut = ui->calcButton;
@@ -43,8 +42,10 @@ void MainWindow::calcButton()
 
     QLineEdit *text = ui->lineEdit;
 
+    int w = ui->graphicsView->width();
+    int h = ui->graphicsView->height();
 
-
+    graph = new QPixmap(w, h);
 
     drawOS();
 
@@ -62,7 +63,7 @@ void MainWindow::calcButton()
             pol.append(QPoint(i+graph->width()/2, -(10*y-graph->height()/2)));
 
         } catch(int e){
-            printf("%.f\n", i);
+            //printf("%.f\n", i);
             /*paint.setPen(QPen(Qt::black,3));
             paint.drawPoint(i+graph->width()/2, -(y-graph->height()/2));
             paint.setPen(QPen(Qt::black,1));*/
@@ -83,16 +84,28 @@ void MainWindow::calcButton()
 
      QPainter paint;
 
+     int w = ui->graphicsView->width();
+     int h = ui->graphicsView->height();
+
+     ui->graphicsView->setGeometry(5, 5, w, h);
+     graph = new QPixmap(w, h);
+
      paint.begin(graph);
-     paint.eraseRect(0, 0, graph->width(), graph->height());
-     paint.drawLine(0, graph->height()/2, graph->width(), graph->height()/2);
-     paint.drawLine(graph->width()/2, 0, graph->width()/2, graph->height());
+     paint.eraseRect(0, 0, w, h);
+     paint.drawLine(0, h/2, w, h/2);
+     paint.drawLine(w/2, 0, w/2, h);
 
      paint.setPen(QPen(Qt::black,3));
-     for(double i = -graph->width(); i <= graph->width(); i+=10.0)
-         paint.drawPoint(i, graph->height()/2);
-     for(double i = -graph->height(); i <= graph->height(); i+=10.0)
-         paint.drawPoint(graph->width()/2, i);
+     double step = 10.0;
+     for(double i = h/2; i <= w; i+=step)
+         paint.drawPoint(i, h/2);
+     for(double i = h/2; i >= 0; i-=step)
+         paint.drawPoint(i, h/2);
+     for(double i = w/2; i <= h; i+=step)
+         paint.drawPoint(w/2, i);
+     for(double i = w/2; i >= 0; i-=step)
+         paint.drawPoint(w/2, i);
+
 
     paint.end();
     ui->graphicsView->setPixmap(*graph);
