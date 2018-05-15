@@ -13,8 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    int w = ui->centralWidget->width();
-    int h = ui->centralWidget->height();
+   // int w = ui->centralWidget->width();
+    //int h = ui->centralWidget->height();
 
 
 
@@ -24,9 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setAlignment(Qt::AlignCenter);
 
 
+    graph = new QPixmap(600, 500);
+
+
     drawOS();
     QPushButton *calcBut = ui->calcButton;
-
+    ui->graphicsView->setMinimumSize(1, 1);
     connect(calcBut, SIGNAL(clicked()), this, SLOT(calcButton()));
 
 
@@ -37,6 +40,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::resizeEvent(QResizeEvent *)
+{
+   m_bUserIsResizing = true;
+}
+bool MainWindow::eventFilter(QObject* pObj, QEvent* pEvent)
+{
+    printf("%d", 1);
+    // We need to check for both types of mouse release, because it can vary on which type happens when resizing.
+    if ((pEvent->type() == QEvent::MouseButtonRelease) || (pEvent->type() == QEvent::NonClientAreaMouseButtonRelease)) {
+        //QMouseEvent* pMouseEvent = dynamic_cast<QMouseEvent*>(pEvent);
+        if (m_bUserIsResizing) {
+            calcButton();
+            m_bUserIsResizing = false; // reset user resizing flag
+        }
+    }
+    return QObject::eventFilter(pObj, pEvent); // pass it on without eating it
+}
 void MainWindow::calcButton()
 {
 
@@ -75,7 +95,7 @@ void MainWindow::calcButton()
    myPath.addPolygon(pol);
    paint.drawPath(myPath);
    paint.end();
-   ui->graphicsView->setPixmap(*graph);
+   ui->graphicsView->setPixmap(graph->scaled(w,h,Qt::KeepAspectRatio));
 
 
 }
@@ -84,11 +104,11 @@ void MainWindow::calcButton()
 
      QPainter paint;
 
-     int w = ui->graphicsView->width();
-     int h = ui->graphicsView->height();
+     int w = graph->width();
+     int h = graph->height();
 
-     ui->graphicsView->setGeometry(5, 5, w, h);
-     graph = new QPixmap(w, h);
+
+
 
      paint.begin(graph);
      paint.eraseRect(0, 0, w, h);
@@ -97,18 +117,18 @@ void MainWindow::calcButton()
 
      paint.setPen(QPen(Qt::black,3));
      double step = 10.0;
-     for(double i = h/2; i <= w; i+=step)
+     for(double i = w/2; i <= w; i+=step)
          paint.drawPoint(i, h/2);
-     for(double i = h/2; i >= 0; i-=step)
-         paint.drawPoint(i, h/2);
-     for(double i = w/2; i <= h; i+=step)
-         paint.drawPoint(w/2, i);
      for(double i = w/2; i >= 0; i-=step)
+         paint.drawPoint(i, h/2);
+     for(double i = h/2; i <= h; i+=step)
+         paint.drawPoint(w/2, i);
+     for(double i = h/2; i >= 0; i-=step)
          paint.drawPoint(w/2, i);
 
 
     paint.end();
-    ui->graphicsView->setPixmap(*graph);
+    ui->graphicsView->setPixmap(graph->scaled(w,h,Qt::KeepAspectRatio));
     return;
 
  }

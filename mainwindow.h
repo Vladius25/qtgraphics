@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    QGraphicsScene *scene;
+    bool m_bUserIsResizing;
     QPixmap *graph;
     ~MainWindow();
 
@@ -24,6 +24,11 @@ private:
 private slots:
     void calcButton();
     void drawOS();
+
+protected:
+    virtual void resizeEvent(QResizeEvent *);
+    virtual bool eventFilter(QObject* pObj, QEvent* pEvent);
+
 
 };
 
