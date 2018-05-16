@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    ui->MainWindow.installEventFilter(this);
 
    // int w = ui->centralWidget->width();
     //int h = ui->centralWidget->height();
@@ -29,8 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     drawOS();
     QPushButton *calcBut = ui->calcButton;
+
+
     ui->graphicsView->setMinimumSize(1, 1);
     connect(calcBut, SIGNAL(clicked()), this, SLOT(calcButton()));
+
 
 
 }
@@ -43,13 +46,16 @@ MainWindow::~MainWindow()
 void MainWindow::resizeEvent(QResizeEvent *)
 {
    m_bUserIsResizing = true;
+
 }
+
 bool MainWindow::eventFilter(QObject* pObj, QEvent* pEvent)
 {
     printf("%d", 1);
     // We need to check for both types of mouse release, because it can vary on which type happens when resizing.
-    if ((pEvent->type() == QEvent::MouseButtonRelease) || (pEvent->type() == QEvent::NonClientAreaMouseButtonRelease)) {
+    if ((pEvent->type() == QEvent::MouseButtonPress) || (pEvent->type() == QEvent::NonClientAreaMouseButtonRelease)) {
         //QMouseEvent* pMouseEvent = dynamic_cast<QMouseEvent*>(pEvent);
+        printf("%d", 2);
         if (m_bUserIsResizing) {
             calcButton();
             m_bUserIsResizing = false; // reset user resizing flag
