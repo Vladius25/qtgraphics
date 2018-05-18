@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->MainWindow.installEventFilter(this);
+    installEventFilter(this);
 
    // int w = ui->centralWidget->width();
     //int h = ui->centralWidget->height();

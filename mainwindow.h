@@ -28,8 +28,6 @@ private slots:
 
 protected:
     virtual void resizeEvent(QResizeEvent *);
-    virtual bool eventFilter(QObject* pObj, QEvent* pEvent);
-
 
 };
 
